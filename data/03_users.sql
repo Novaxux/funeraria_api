@@ -1,24 +1,32 @@
--- Crear usuario de aplicación (permisos mínimos)
-CREATE USER IF NOT EXISTS 'app_user'@'%' IDENTIFIED BY 'app_password';
-GRANT SELECT ON `kitchy`.`recipes` TO 'app_user'@'%';
-GRANT SELECT ON `kitchy`.`recipe_ingredients` TO 'app_user'@'%';
-GRANT SELECT ON `kitchy`.`ingredients` TO 'app_user'@'%';
-GRANT SELECT ON `kitchy`.`units` TO 'app_user'@'%';
-GRANT SELECT ON `kitchy`.`categories` TO 'app_user'@'%';
-GRANT SELECT ON `kitchy`.`countries` TO 'app_user'@'%'; 
-GRANT SELECT, INSERT, UPDATE ON `kitchy`.`favorites` TO 'app_user'@'%';
-GRANT SELECT, INSERT, UPDATE ON `kitchy`.`likes` TO 'app_user'@'%';
-GRANT SELECT, INSERT, UPDATE ON `kitchy`.`users` TO 'app_user'@'%';
+-- ============================================
+-- CREACIÓN DE USUARIOS
+-- ============================================
+CREATE USER 'admin_funeraria'@'%' IDENTIFIED BY 'Admin123!';
+CREATE USER 'funeraria_user'@'%' IDENTIFIED BY 'Funeraria123!';
+CREATE USER 'empleado_user'@'%' IDENTIFIED BY 'Empleado123!';
+CREATE USER 'cliente_user'@'%' IDENTIFIED BY 'Cliente123!';
 
+-- ============================================
+-- ASIGNACIÓN DE PRIVILEGIOS
+-- ============================================
 
--- Crear usuario admin (permisos amplios pero seguros)
-CREATE USER IF NOT EXISTS 'admin_user'@'%' IDENTIFIED BY 'admin_password';
+-- ADMIN: acceso total a todo (tablas, funciones, vistas, procedimientos)
+GRANT ALL PRIVILEGES ON funeraria_db.* TO 'admin_funeraria'@'%';
 
--- Otorgar permisos amplios excepto DROP, CREATE USER, SUPER y SHUTDOWN
-GRANT SELECT, INSERT, UPDATE, DELETE,
-      CREATE, ALTER, INDEX, REFERENCES,
-      CREATE TEMPORARY TABLES, LOCK TABLES,
-      EXECUTE, SHOW VIEW, CREATE VIEW, EVENT, TRIGGER
-ON `kitchy`.* TO 'admin_user'@'%';
+-- FUNERARIA: acceso CRUD completo a clientes, familiares, recuerdos y entregas
+GRANT SELECT, INSERT, UPDATE, DELETE ON funeraria_db.clientes TO 'funeraria_user'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON funeraria_db.familiares TO 'funeraria_user'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON funeraria_db.recuerdos TO 'funeraria_user'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON funeraria_db.entregas TO 'funeraria_user'@'%';
 
+-- EMPLEADO: solo puede leer y actualizar el estado del cliente
+GRANT SELECT, UPDATE (estatus) ON funeraria_db.clientes TO 'empleado_user'@'%';
+
+-- CLIENTE: puede leer e insertar/actualizar sus propios datos familiares y recuerdos
+GRANT SELECT, INSERT, UPDATE ON funeraria_db.familiares TO 'cliente_user'@'%';
+GRANT SELECT, INSERT, UPDATE ON funeraria_db.recuerdos TO 'cliente_user'@'%';
+
+-- ============================================
+-- APLICAR CAMBIOS
+-- ============================================
 FLUSH PRIVILEGES;
