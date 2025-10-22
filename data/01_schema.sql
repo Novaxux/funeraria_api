@@ -74,3 +74,4 @@ CREATE TABLE entregas (
         REFERENCES familiares(id_familiar)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
+ 
