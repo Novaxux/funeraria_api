@@ -16,7 +16,6 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
-app.use();
 app.use(cors({ origin: CORS_ORIGIN, credentials: true }));
 
 // --- Configuración de sesión ---

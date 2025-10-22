@@ -1,0 +1,14 @@
+En que consiste la app:
+Es una applicacion en la que las funerarias crean empleados y clientes, el empleado de una funeraria puede cambiar el estado de un cliente de vivo a muerto,
+al fallecer se le debe mandar una alerta a los familiares del recuerdo registrado, las funerarias las registra el admin, los recuerdos son creados por el cliente, 
+
+
+SIGUIENDO LA ESTRUCTURA DE MI PROYECTO y tomando en cuenta la lógica (el código es meramente ejemplo):
+
+REALIZA LA API CON CRUDS PARA CADA TABLA, HACIENDO 4 POOLS INGRESADOS EN data/03_users.sql
+TOMA EN CUENTA QUE PERMISOS TIENE TODOS LOS USUARIOS PARA REALIZAR LAS PETICIONES SQL DEL API.
+
+El admin debe tener sus propios endpoints para crear funerarias
+usa middlewares para asignar pools correspondientes
+
+LA IDEA  ES QUE LA FUNERARIA PUEDE INGRESAR A EMPLEADOS 

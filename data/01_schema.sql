@@ -28,6 +28,7 @@ CREATE TABLE `usuarios` (
   `rol` ENUM('cliente','admin','trabajador','funeraria') NOT NULL,
   `status` TINYINT(1) NOT NULL DEFAULT 1,
   `fecha_nacimiento` DATE DEFAULT NULL,
+  `contrasena` VARCHAR(55) NOT NULL,
   `id_funeraria` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_funeraria` (`id_funeraria`),
