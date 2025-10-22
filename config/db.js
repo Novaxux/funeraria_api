@@ -14,11 +14,11 @@ const DB_NAME = process.env.DB_NAME;
 // =============================================
 function makePool(user, password) {
 	return mysql.createPool({
-		host: DB_HOST,
-		port: DB_PORT,
-		user,
-		password,
-		database: DB_NAME,
+		host: "mysql",
+		port: 3306,
+		user:"root",
+		password:"root",
+		database: "funeraria_db",
 		waitForConnections: true,
 		connectionLimit: 10,
 		queueLimit: 0,

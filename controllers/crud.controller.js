@@ -1,61 +1,51 @@
-export function makeCrudController(repository) {
-  return {
-    async list(req, res) {
-      try {
-        const rows = await repository.list(req.pool);
-        res.json(rows);
-      } catch (err) {
-        console.error("list error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
+import * as CrudRepository from '../models/crud.repository.js';
 
-    async get(req, res) {
-      try {
-        const id = req.params.id;
-        const row = await repository.getById(req.pool, id);
-        if (!row) return res.status(404).json({ error: "Not found" });
-        res.json(row);
-      } catch (err) {
-        console.error("get error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
+const createCrudController = (tableName) => {
+    return {
+        getAll: async (req, res) => {
+            try {
+                const items = await CrudRepository.getAll(tableName);
+                res.json(items);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+        getById: async (req, res) => {
+            try {
+                const item = await CrudRepository.getById(tableName, req.params.id);
+                if (!item) {
+                    return res.status(404).json({ message: 'Not found' });
+                }
+                res.json(item);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+        create: async (req, res) => {
+            try {
+                const newItem = await CrudRepository.create(tableName, req.body);
+                res.status(201).json(newItem);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+        update: async (req, res) => {
+            try {
+                const updatedItem = await CrudRepository.update(tableName, req.params.id, req.body);
+                res.json(updatedItem);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+        remove: async (req, res) => {
+            try {
+                await CrudRepository.remove(tableName, req.params.id);
+                res.status(204).json();
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+    };
+};
 
-    async create(req, res) {
-      try {
-        const data = req.body;
-        const insertId = await repository.create(req.pool, data);
-        res.status(201).json({ id: insertId });
-      } catch (err) {
-        console.error("create error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
-
-    async update(req, res) {
-      try {
-        const id = req.params.id;
-        const data = req.body;
-        const affected = await repository.update(req.pool, id, data);
-        if (!affected) return res.status(404).json({ error: "Not found" });
-        res.json({ affected });
-      } catch (err) {
-        console.error("update error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
-
-    async remove(req, res) {
-      try {
-        const id = req.params.id;
-        const affected = await repository.delete(req.pool, id);
-        if (!affected) return res.status(404).json({ error: "Not found" });
-        res.json({ affected });
-      } catch (err) {
-        console.error("delete error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
-  };
-}
+export default createCrudController;

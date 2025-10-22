@@ -1,41 +1,31 @@
-// Generic CRUD repository using parameterized queries.
-export class CrudRepository {
-  constructor(tableName) {
-    this.table = tableName;
-  }
+import { userPool as pool } from '../config/db.js';
 
-  async list(pool, where = "", params = []) {
-    const sql = `SELECT * FROM ${this.table} ${where}`;
-    const [rows] = await pool.query(sql, params);
+export const getAll = async (table) => {
+    const [rows] = await pool.query(`SELECT * FROM ${table}`);
     return rows;
-  }
+};
 
-  async getById(pool, id) {
-    const sql = `SELECT * FROM ${this.table} WHERE id = ?`;
-    const [rows] = await pool.query(sql, [id]);
-    return rows.length ? rows[0] : null;
-  }
+export const getById = async (table, id) => {
+    const [rows] = await pool.query(`SELECT * FROM ${table} WHERE id = ?`, [id]);
+    return rows[0];
+};
 
-  async create(pool, data) {
-    const keys = Object.keys(data);
-    const placeholders = keys.map(() => "?").join(",");
-    const sql = `INSERT INTO ${this.table} (${keys.join(",")}) VALUES (${placeholders})`;
-    const [result] = await pool.execute(sql, keys.map((k) => data[k]));
-    return result.insertId;
-  }
+export const create = async (table, data) => {
+    const columns = Object.keys(data).join(', ');
+    const values = Object.values(data);
+    const placeholders = values.map(() => '?').join(', ');
+    const [result] = await pool.query(`INSERT INTO ${table} (${columns}) VALUES (${placeholders})`, values);
+    return { id: result.insertId, ...data };
+};
 
-  async update(pool, id, data) {
-    const keys = Object.keys(data);
-    const assignments = keys.map((k) => `${k} = ?`).join(",");
-    const sql = `UPDATE ${this.table} SET ${assignments} WHERE id = ?`;
-    const params = keys.map((k) => data[k]).concat([id]);
-    const [result] = await pool.execute(sql, params);
-    return result.affectedRows;
-  }
+export const update = async (table, id, data) => {
+    const columns = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    const values = [...Object.values(data), id];
+    await pool.query(`UPDATE ${table} SET ${columns} WHERE id = ?`, values);
+    return { id, ...data };
+};
 
-  async delete(pool, id) {
-    const sql = `DELETE FROM ${this.table} WHERE id = ?`;
-    const [result] = await pool.execute(sql, [id]);
-    return result.affectedRows;
-  }
-}
+export const remove = async (table, id) => {
+    await pool.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    return { id };
+};
