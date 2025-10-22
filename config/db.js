@@ -5,9 +5,9 @@ config();
 
 // Create multiple pools for different DB users/roles.
 // Environment variables used as fallback; sensible defaults provided for local dev.
-const DB_HOST = process.env.DB_HOST || "127.0.0.1";
-const DB_PORT = process.env.DB_PORT || 3306;
-const DB_NAME = process.env.DB_NAME || "funerarias_db";
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_NAME = process.env.DB_NAME;
 
 function makePool(user, password) {
 	return mysql.createPool({
