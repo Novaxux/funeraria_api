@@ -9,7 +9,7 @@ CREATE TABLE clientes (
     genero ENUM('Masculino','Femenino','Otro'),
     estatus ENUM('Activo','Fallecido') DEFAULT 'Activo',
     fecha_muerte DATE,
-    correo VARCHAR(100),
+    correo VARCHAR(100) NOT NULL,
     telefono VARCHAR(20),
     CONSTRAINT fk_cliente_funeraria FOREIGN KEY (id_funeraria)
         REFERENCES funerarias(id_funeraria)
