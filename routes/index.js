@@ -1,6 +1,8 @@
 import express from 'express';
 const router = express.Router();
-
+router.get("/", (req, res) => {
+  res.send("Funeraria API - web root");
+});
 // Importar todas las rutas
 import adminsRoutes from './admins.routes.js';
 import clientesRoutes from './clientes.routes.js';
