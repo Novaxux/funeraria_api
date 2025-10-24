@@ -100,6 +100,7 @@ CREATE TABLE `recuerdos_familiares` (
   `fecha_envio` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `metodo_envio` ENUM('Correo','SMS','WhatsApp') NOT NULL DEFAULT 'Correo',
   `estatus_envio` ENUM('Pendiente','Enviado','Fallido') NOT NULL DEFAULT 'Pendiente',
+  `intentos` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_entrega`),
   CONSTRAINT `recuerdos_enviados_ibfk_1` FOREIGN KEY (`id_recuerdo`) REFERENCES `recuerdos` (`id_recuerdo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `recuerdos_enviados_ibfk_2` FOREIGN KEY (`id_familiar`) REFERENCES `familiares` (`id_familiar`) ON DELETE CASCADE ON UPDATE CASCADE
