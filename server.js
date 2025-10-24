@@ -5,12 +5,11 @@ import session from "express-session";
 
 import { PORT, CORS_ORIGIN, SESSION_SECRET } from "./config/config.js";
 
-// Rutas
-import webRoutes from "./routes/web.routes.js";
-import apiRoutes from "./routes/api.routes.js";
+// Enrutador principal
+import mainRouter from "./routes/index.js";
 
 // Middlewares
-import { attachUser } from "./middlewares/auth.middleware.js";
+// import { attachUser } from "./middlewares/auth.middleware.js"; // Descomentar cuando se implemente JWT
 
 const app = express();
 
@@ -18,7 +17,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({ origin: CORS_ORIGIN, credentials: true }));
 
-// --- Configuración de sesión ---
+// --- Configuración de sesión (opcional, puede ser útil para web) ---
 app.use(
   session({
     secret: SESSION_SECRET,
@@ -27,18 +26,17 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false, // cambia a true si usas HTTPS
-      sameSite: "lax", // "none" puede causar errores en desarrollo local
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24, // 1 día
     },
   })
 );
 
 // --- Adjunta usuario autenticado a req.user ---
-app.use(attachUser);
+// app.use(attachUser); // Descomentar cuando se implemente JWT
 
 // --- Rutas ---
-app.use("/api", apiRoutes);
-app.use("/", webRoutes);
+app.use("/api", mainRouter);
 
 // --- Servidor ---
 app.listen(PORT, () => {
