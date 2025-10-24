@@ -1,16 +1,17 @@
-import express from 'express';
-const router = express.Router();
-import adminsController from '../controllers/admins.controller.js';
-import { login } from '../controllers/auth.controller.js';
+import { Router } from "express";
+import { AdminsController } from "../controllers/admins.controllers.js";
+import { attachUser, requireAdmin } from "../middlewares/auth.middleware.js";
 
-// Rutas CRUD
-router.get('/', adminsController.getAll);
-router.get('/:id', adminsController.getById);
-router.post('/', adminsController.create);
-router.put('/:id', adminsController.update);
-router.delete('/:id', adminsController.remove);
+const router = Router();
 
-// Ruta de Login
-router.post('/login', login('admins', 'id_admin'));
+// ✅ Aplica middleware de sesión y rol
+router.use(attachUser);
+router.use(requireAdmin);
+
+// Rutas de administradores (solo accesibles por admin)
+router.get("/", AdminsController.getAll);
+router.get("/:id", AdminsController.getById);
+router.post("/", AdminsController.create);
+router.delete("/:id", AdminsController.remove);
 
 export default router;
