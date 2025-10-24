@@ -1,11 +1,27 @@
-import express from 'express';
-const router = express.Router();
-import funerariasController from '../controllers/funerarias.controller.js';
+import { Router } from "express";
+import { FunerariasController } from "../controllers/funerarias.controller.js";
+import {
+  attachUser,
+  requireAdmin,
+  requireFuneraria,
+} from "../middlewares/auth.middleware.js";
 
-router.get('/', funerariasController.getAll);
-router.get('/:id', funerariasController.getById);
-router.post('/', funerariasController.create);
-router.put('/:id', funerariasController.update);
-router.delete('/:id', funerariasController.remove);
+const router = Router();
+
+// Adjunta el usuario autenticado a la petición
+router.use(attachUser);
+
+// 👇 Rutas
+router.get("/", FunerariasController.getAll);
+router.get("/:id", FunerariasController.getById);
+
+// Solo un administrador puede crear funerarias
+router.post("/", requireAdmin, FunerariasController.create);
+
+// Admin o funeraria puede actualizar su información
+router.put("/:id", requireFuneraria, FunerariasController.update);
+
+// Solo administrador puede eliminar
+router.delete("/:id", requireAdmin, FunerariasController.remove);
 
 export default router;
