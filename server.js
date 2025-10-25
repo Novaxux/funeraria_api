@@ -12,7 +12,6 @@ import apiRoutes from "./routes/api.routes.js";
 // import { attachUser } from "./middlewares/auth.middleware.js"; // Descomentar cuando se implemente JWT
 
 const app = express();
-const ejemplo = "joaquin";
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({ origin: CORS_ORIGIN, credentials: true }));
