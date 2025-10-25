@@ -24,5 +24,16 @@ services:
       - ./data:/docker-entrypoint-initdb.d
       - ./mysql-config:/etc/mysql/conf.d
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8083:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
+    depends_on:
+      - mysql
+
 volumes:
   mysql-data:
