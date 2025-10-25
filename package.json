@@ -9,6 +9,7 @@
     "dev": "npm run lint && nodemon server.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
+    "format": "prettier --write .",
     "prepare": "husky"
   },
   "keywords": [],
@@ -32,6 +33,9 @@
     "prettier": "3.6.2"
   },
   "lint-staged": {
-    "**/*": "npm run lint"
+    "**/*": [
+      "npm run lint",
+      "npm run format"
+    ]
   }
 }

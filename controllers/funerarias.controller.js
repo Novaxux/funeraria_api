@@ -6,7 +6,7 @@ export const FunerariasController = {
   async getAll(req, res) {
     try {
       // const data = await FunerariasRepository.findAll(req.pool);
-        const data = await FunerariasRepository.findAll(pool);
+      const data = await FunerariasRepository.findAll(pool);
       res.json(data);
     } catch (err) {
       console.error("getAll funerarias error:", err);
@@ -18,7 +18,7 @@ export const FunerariasController = {
   async getById(req, res) {
     try {
       // const data = await FunerariasRepository.findById(req.pool, req.params.id);
-        const data = await FunerariasRepository.findById(pool, req.params.id);
+      const data = await FunerariasRepository.findById(pool, req.params.id);
       if (!data)
         return res.status(404).json({ message: "Funeraria no encontrada" });
       res.json(data);
@@ -39,7 +39,7 @@ export const FunerariasController = {
       }
 
       // const data = await FunerariasRepository.create(req.pool, {
-        const data = await FunerariasRepository.create(pool, {
+      const data = await FunerariasRepository.create(pool, {
         nombre,
         direccion,
         telefono,
@@ -59,7 +59,7 @@ export const FunerariasController = {
     try {
       const { id } = req.params;
       // const updated = await FunerariasRepository.update(req.pool, id, req.body);
-        const updated = await FunerariasRepository.patch(pool, id, req.body);
+      const updated = await FunerariasRepository.patch(pool, id, req.body);
       if (!updated)
         return res.status(404).json({ message: "Funeraria no encontrada" });
 
@@ -74,7 +74,7 @@ export const FunerariasController = {
   async remove(req, res) {
     try {
       // const data = await FunerariasRepository.delete(req.pool, req.params.id);
-        const data = await FunerariasRepository.delete(pool, req.params.id);
+      const data = await FunerariasRepository.delete(pool, req.params.id);
       res.json(data);
     } catch (err) {
       console.error("remove funeraria error:", err);
