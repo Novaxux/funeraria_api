@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "npm run lint && nodemon server.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix"
   },
@@ -26,7 +26,11 @@
     "@eslint/js": "^9.38.0",
     "eslint": "^9.38.0",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
     "nodemon": "^3.1.10",
     "prettier": "3.6.2"
+  },
+    "lint-staged": {
+    "**/*": "npm run lint"
   }
 }
