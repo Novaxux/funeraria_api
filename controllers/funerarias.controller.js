@@ -1,10 +1,12 @@
 import { FunerariasRepository } from "../models/funerariasRepository.js";
+import { pool } from "../config/db.js";
 
 export const FunerariasController = {
   /** Listar todas las funerarias */
   async getAll(req, res) {
     try {
-      const data = await FunerariasRepository.findAll(req.pool);
+      // const data = await FunerariasRepository.findAll(req.pool);
+        const data = await FunerariasRepository.findAll(pool);
       res.json(data);
     } catch (err) {
       console.error("getAll funerarias error:", err);
@@ -15,7 +17,8 @@ export const FunerariasController = {
   /** Obtener funeraria por ID */
   async getById(req, res) {
     try {
-      const data = await FunerariasRepository.findById(req.pool, req.params.id);
+      // const data = await FunerariasRepository.findById(req.pool, req.params.id);
+        const data = await FunerariasRepository.findById(pool, req.params.id);
       if (!data)
         return res.status(404).json({ message: "Funeraria no encontrada" });
       res.json(data);
@@ -28,16 +31,6 @@ export const FunerariasController = {
   /** Crear funeraria (solo admin puede hacerlo) */
   async create(req, res) {
     try {
-      const user = req.user;
-      if (!user) return res.status(401).json({ message: "No autenticado" });
-      if (user.role_id !== 1) {
-        return res
-          .status(403)
-          .json({
-            message: "Solo un administrador puede registrar funerarias",
-          });
-      }
-
       const { nombre, direccion, telefono, correo_contacto } = req.body;
       if (!nombre || !direccion || !telefono || !correo_contacto) {
         return res
@@ -45,7 +38,8 @@ export const FunerariasController = {
           .json({ message: "Todos los campos son obligatorios" });
       }
 
-      const data = await FunerariasRepository.create(req.pool, {
+      // const data = await FunerariasRepository.create(req.pool, {
+        const data = await FunerariasRepository.create(pool, {
         nombre,
         direccion,
         telefono,
@@ -61,18 +55,11 @@ export const FunerariasController = {
   },
 
   /** Actualizar funeraria (funeraria o admin) */
-  async update(req, res) {
+  async patch(req, res) {
     try {
-      const user = req.user;
-      if (!user) return res.status(401).json({ message: "No autenticado" });
-
-      // Solo el admin o la funeraria propietaria puede actualizar
-      if (user.role_id !== 1 && user.role_id !== 2) {
-        return res.status(403).json({ message: "Acceso denegado" });
-      }
-
       const { id } = req.params;
-      const updated = await FunerariasRepository.update(req.pool, id, req.body);
+      // const updated = await FunerariasRepository.update(req.pool, id, req.body);
+        const updated = await FunerariasRepository.patch(pool, id, req.body);
       if (!updated)
         return res.status(404).json({ message: "Funeraria no encontrada" });
 
@@ -86,17 +73,8 @@ export const FunerariasController = {
   /** Eliminar funeraria (solo admin) */
   async remove(req, res) {
     try {
-      const user = req.user;
-      if (!user) return res.status(401).json({ message: "No autenticado" });
-      if (user.role_id !== 1) {
-        return res
-          .status(403)
-          .json({
-            message: "Solo los administradores pueden eliminar funerarias",
-          });
-      }
-
-      const data = await FunerariasRepository.delete(req.pool, req.params.id);
+      // const data = await FunerariasRepository.delete(req.pool, req.params.id);
+        const data = await FunerariasRepository.delete(pool, req.params.id);
       res.json(data);
     } catch (err) {
       console.error("remove funeraria error:", err);

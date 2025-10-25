@@ -6,7 +6,7 @@ import session from "express-session";
 import { PORT, CORS_ORIGIN, SESSION_SECRET } from "./config/config.js";
 
 // Enrutador principal
-import mainRouter from "./routes/index.js";
+import apiRoutes from "./routes/api.routes.js";
 
 // Middlewares
 // import { attachUser } from "./middlewares/auth.middleware.js"; // Descomentar cuando se implemente JWT
@@ -36,7 +36,7 @@ app.use(
 // app.use(attachUser); // Descomentar cuando se implemente JWT
 
 // --- Rutas ---
-app.use("/api", mainRouter);
+app.use("/api", apiRoutes);
 
 // --- Servidor ---
 app.listen(PORT, () => {

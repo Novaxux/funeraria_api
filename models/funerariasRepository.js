@@ -36,22 +36,33 @@ export class FunerariasRepository {
   }
 
   /** Actualizar funeraria */
-  static async update(pool, id_funeraria, data) {
-    const { nombre, direccion, telefono, correo_contacto, estado_funeraria } =
-      data;
+  static async patch(pool, id_funeraria, data) {
+    // Construimos dinámicamente los campos a actualizar
+    const fields = [];
+    const values = [];
+
+    for (const key of [
+      "nombre",
+      "direccion",
+      "telefono",
+      "correo_contacto",
+      "estado_funeraria",
+    ]) {
+      if (data[key] !== undefined) {
+        fields.push(`${key} = ?`);
+        values.push(data[key]);
+      }
+    }
+
+    if (fields.length === 0) return this.findById(pool, id_funeraria); // Nada que actualizar
+
+    values.push(id_funeraria);
+
     await pool.query(
-      `UPDATE funerarias
-       SET nombre = ?, direccion = ?, telefono = ?, correo_contacto = ?, estado_funeraria = ?
-       WHERE id_funeraria = ?`,
-      [
-        nombre,
-        direccion,
-        telefono,
-        correo_contacto,
-        estado_funeraria,
-        id_funeraria,
-      ]
+      `UPDATE funerarias SET ${fields.join(", ")} WHERE id_funeraria = ?`,
+      values
     );
+
     return this.findById(pool, id_funeraria);
   }
 

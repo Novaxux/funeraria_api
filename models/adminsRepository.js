@@ -43,7 +43,18 @@ export class AdminsRepository {
 
   /** Eliminar registro */
   static async delete(pool, id_admin) {
+    // Verificar si existe el registro
+    const [rows] = await pool.query(`SELECT * FROM admins WHERE id_admin = ?`, [
+      id_admin,
+    ]);
+
+    if (rows.length === 0) {
+      return null; // No existe
+    }
+
+    // Eliminar registro
     await pool.query(`DELETE FROM admins WHERE id_admin = ?`, [id_admin]);
+
     return { message: "Administrador eliminado correctamente" };
   }
 }

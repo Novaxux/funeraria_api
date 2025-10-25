@@ -1,14 +1,3 @@
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS `recuerdos_familiares`;
-DROP TABLE IF EXISTS `recuerdos`;
-DROP TABLE IF EXISTS `familiares`;
-DROP TABLE IF EXISTS `admins`;
-DROP TABLE IF EXISTS `trabajadores`;
-DROP TABLE IF EXISTS `clientes`;
-DROP TABLE IF EXISTS `usuarios`;
-DROP TABLE IF EXISTS `funerarias`;
-SET FOREIGN_KEY_CHECKS = 1;
-
 CREATE TABLE `funerarias` (
   `id_funeraria` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
