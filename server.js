@@ -3,7 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import session from "express-session";
 
-import { PORT, CORS_ORIGIN, SESSION_SECRET } from "./config/config.js";
+import { PORT, CORS_ORIGIN, SESSION_SECRET } from "./config/db.js";
 
 // Enrutador principal
 import mainRouter from "./routes/index.js";
